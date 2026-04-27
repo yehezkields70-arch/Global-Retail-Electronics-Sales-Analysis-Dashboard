@@ -151,17 +151,29 @@ Total Quantity = SUM(Sales[Quantity])
 ## Project Files
 
 ```
-📦 Sales-Analytics-Dashboard
-├── 📊 Sales_Analytics_Dashboard.pbix
-├── 📁 Data/
+📦 Global-Retail-Electronics-Sales-Analysis/
+│
+├── 📄 README.md                    
+├── 📁 docs/                       
+│   ├── 01_Project_Brief.txt
+│   ├── 02_PowerQuery_Transformation_Guide.txt
+│   ├── 03_DAX_Measures_Documentation.txt
+│   ├── 04_Dashboard_Layout_Guide.txt
+│   └── 05_Project_Index.txt
+│
+├── 📁 data/                       
 │   ├── Sales.csv
 │   ├── Products.csv
 │   ├── Stores.csv
 │   └── Customers.csv
-├── 📄 Project_Brief.md
-├── 📄 DAX_Measures.txt
-└── 📄 README.md
-```
+│
+├── 📁 images/                      
+│   ├── dashboard_overview.png
+│   ├── product_analysis.png
+│   ├── store_analysis.png
+│   └── customer_analysis.png
+│
+└── 📊 Global_Retail_Electronics.pbix   
 
 ---
 
