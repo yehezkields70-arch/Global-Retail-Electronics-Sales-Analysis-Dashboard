@@ -1,0 +1,246 @@
+================================================================================
+                    DASHBOARD LAYOUT & VISUALIZATION GUIDE
+                   Global Retail Electronics Sales Analysis
+================================================================================
+
+CATATAN: Panduan ini untuk membuat dashboard di Power BI Desktop
+
+================================================================================
+                           PAGE SETUP
+================================================================================
+
+1. Klik tab "View" > "Page View" > "Fit to Width"
+2. Atur ukuran canvas:
+   - Klik kanan di area kosong
+   - Pilih "Page Size"
+   - Type: Custom
+   - Width: 1280
+   - Height: 720 (atau sesuaikan kebutuhan)
+
+================================================================================
+                    ROW 1: KPI CARDS (Top Section)
+================================================================================
+
+Buat 4 Card Visuals:
+
+CARD 1: Total Revenue
+---------------------
+• Visual: Card
+• Field: [Total Revenue]
+• Format:
+  - Label: "Total Revenue"
+  - Display Units: Auto
+  - Color: #217346 (hijau)
+
+CARD 2: Gross Profit
+---------------------
+• Visual: Card
+• Field: [Gross Profit]
+• Format:
+  - Label: "Gross Profit"
+  - Color: #106ebe (biru)
+
+CARD 3: Total Orders
+---------------------
+• Visual: Card
+• Field: [Total Orders]
+• Format:
+  - Label: "Total Orders"
+  - Color: #d83b01 (oranye)
+
+CARD 4: Average Order Value
+---------------------
+• Visual: Card
+• Field: [Average Order Value]
+• Format:
+  - Label: "Avg Order Value"
+  - Color: #8764b8 (ungu)
+
+================================================================================
+                    ROW 2: TREND & MAP
+================================================================================
+
+VISUAL 1: Line Chart - Revenue Trend
+-------------------------------------
+• Visual: Line Chart
+• X-axis: Date Table[Date] (hierarchy: Year > Month)
+• Y-axis: [Total Revenue]
+• Format:
+  - Title: "Revenue Trend"
+  - Data Colors: #217346
+  - Stroke Width: 3
+
+VISUAL 2: Map - Revenue by Country
+-------------------------------------
+• Visual: Filled Map (atau Shape Map)
+• Location: Stores[Country]
+• Size/Color: [Total Revenue]
+• Format:
+  - Title: "Revenue by Country"
+  - Data Colors: Gradient (light to dark blue)
+
+================================================================================
+                    ROW 3: COMPOSITION & TOP PRODUCTS
+================================================================================
+
+VISUAL 1: Donut Chart - Revenue by Category
+-------------------------------------------
+• Visual: Donut Chart
+• Legend: Products[Category]
+• Values: [Total Revenue]
+• Format:
+  - Title: "Revenue by Category"
+  - Inner Radius: 50%
+  - Data Colors: Custom palette
+
+VISUAL 2: Horizontal Bar - Top 10 Products
+------------------------------------------
+• Visual: Clustered Bar Chart
+• Y-axis: Products[Product Name]
+• X-axis: [Total Revenue]
+• Filter: Top 10 by [Total Revenue]
+• Format:
+  - Title: "Top 10 Products by Revenue"
+  - Sort: Descending
+
+================================================================================
+                    ROW 4: CHANNEL & CUSTOMER PROFILE
+================================================================================
+
+VISUAL 1: Clustered Bar - Online vs Offline
+-------------------------------------------
+• Visual: Clustered Bar Chart
+• X-axis: Sales[Channel]
+• Y-axis: [Total Revenue]
+• Format:
+  - Title: "Online vs Offline Revenue"
+  - Colors: Online=#00B294, Offline=#FFB900
+
+VISUAL 2: Donut Chart - Gender Composition
+------------------------------------------
+• Visual: Donut Chart
+• Legend: Customers[Gender]
+• Values: [Total Customers] (atau [Total Revenue])
+• Format:
+  - Title: "Customer Gender Distribution"
+
+================================================================================
+                    ROW 5: PROFITABILITY ANALYSIS
+================================================================================
+
+VISUAL: Scatter Plot - Revenue vs Margin
+-----------------------------------------
+• Visual: Scatter Chart
+• X-axis: [Total Revenue]
+• Y-axis: [Profit Margin %]
+• Legend: Products[Brand]
+• Size: [Total Quantity]
+• Format:
+  - Title: "Revenue vs Profit Margin by Brand"
+  - Play Axis: Date Table[Year] (optional)
+
+================================================================================
+                    SLICER PANEL (Right Side or Top)
+================================================================================
+
+Buat 4 Slicers:
+
+SLICER 1: Tahun
+---------------
+• Field: Date Table[Year]
+• Style: Dropdown atau Button
+
+SLICER 2: Negara
+---------------
+• Field: Stores[Country]
+• Style: Dropdown
+
+SLICER 3: Kategori
+------------------
+• Field: Products[Category]
+• Style: Dropdown
+
+SLICER 4: Channel
+-----------------
+• Field: Sales[Channel]
+• Style: Button
+
+================================================================================
+                    ADDITIONAL VISUALS (Optional)
+================================================================================
+
+TREEMAP: Customer Distribution by Country
+-----------------------------------------
+• Visual: Treemap
+• Category: Stores[Country]
+• Values: [Total Customers]
+• Title: "Customer Distribution by Country"
+
+MATRIX: Category x Subcategory
+-------------------------------
+• Visual: Matrix
+• Rows: Products[Category], Products[Subcategory]
+• Values: [Total Revenue], [Profit Margin %]
+• Title: "Revenue & Margin by Category"
+
+BAR CHART: Top 10 Stores
+-------------------------
+• Visual: Clustered Bar
+• Y-axis: Stores[Store Name]
+• X-axis: [Total Revenue]
+• Filter: Top 10
+• Title: "Top 10 Stores by Revenue"
+
+SCATTER: Store Efficiency
+--------------------------
+• Visual: Scatter Chart
+• X-axis: Stores[Square Meters]
+• Y-axis: [Total Revenue]
+• Title: "Revenue vs Store Size"
+
+BAR CHART: Revenue by Age Group
+--------------------------------
+• Visual: Clustered Column
+• X-axis: Customers[Kelompok Usia]
+• Y-axis: [Total Revenue]
+• Title: "Revenue by Age Group"
+
+================================================================================
+                    FORMATTING TIPS
+================================================================================
+
+1. THEME
+   • Gunakan tema konsisten (warna perusahaan atau profesional)
+   • Background: Putih atau abu-abu sangat muda (#F3F2F1)
+
+2. TYPOGRAPHY
+   • Title: Segoe UI Bold, 14pt
+   • Labels: Segoe UI, 10-11pt
+   • KPI Cards: Segoe UI Bold, 24pt (value), 12pt (label)
+
+3. ALIGNMENT
+   • Gunakan "Align" tools di Format > Align
+   • Jarak antar visual: 10-15px
+
+4. INTERACTIVITY
+   • Aktifkan "Edit Interactions" untuk mengatur cross-filtering
+   • Default: semua visual saling filter
+
+5. TOOLTIPS
+   • Buat custom tooltip page untuk detail tambahan
+   • Page Size: Tooltip
+   • Tambahkan info relevan saat hover
+
+================================================================================
+                    PUBLISH & SHARE
+================================================================================
+
+1. Klik "Publish" di toolbar
+2. Login ke Power BI Service
+3. Pilih workspace
+4. Setelah publish, buat "App" untuk distribusi
+5. Atur permissions (Viewer, Member, Admin)
+
+================================================================================
+                              END OF DOCUMENT
+================================================================================

@@ -1,0 +1,174 @@
+
+================================================================================
+                    Global Retail Electronics Sales Analysis
+                         Project Brief & Documentation
+================================================================================
+
+PROJECT OVERVIEW
+--------------------------------------------------------------------------------
+Project Name      : Global Retail Electronics Sales Analysis
+Industry          : Retail / E-Commerce Analytics
+Tools Used        : Microsoft Power BI, Power Query, DAX
+Duration          : 2 Weeks
+Role              : Data Analyst
+
+PROJECT DESCRIPTION
+--------------------------------------------------------------------------------
+Project ini adalah analisis komprehensif terhadap data penjualan retail 
+multichannel (Online & Offline) yang bertujuan untuk:
+
+1. Membersihkan dan mentransformasi data mentah menjadi data siap analisis
+2. Membangun model data dimensional yang robust
+3. Menghitung metrik bisnis kunci (KPI) menggunakan DAX
+4. Membuat dashboard interaktif untuk stakeholders
+
+BUSINESS PROBLEM
+--------------------------------------------------------------------------------
+Perusahaan retail menghadapi tantangan dalam:
+- Memahami profitabilitas per produk dan brand
+- Mengidentifikasi performa toko per wilayah
+- Menganalisis segmentasi pelanggan
+- Membandingkan channel penjualan (Online vs Offline)
+- Memantau tren penjualan secara real-time
+
+BUSINESS OBJECTIVES
+--------------------------------------------------------------------------------
+✓ Meningkatkan visibility terhadap performa penjualan
+✓ Mengidentifikasi produk dan brand paling profitabel
+✓ Menganalisis efisiensi toko berdasarkan luas dan revenue
+✓ Memahami demografi dan perilaku pelanggan
+✓ Mendukung pengambilan keputusan berbasis data
+
+DATA SOURCES
+--------------------------------------------------------------------------------
+┌─────────────────┬────────────────────────────────────────────┐
+│ Table           │ Description                                │
+├─────────────────┼────────────────────────────────────────────┤
+│ Sales           │ Tabel fakta transaksi penjualan            │
+│ Products        │ Dimensi produk (kategori, brand, harga)    │
+│ Stores          │ Dimensi toko (lokasi, luas, tanggal buka)  │
+│ Customers       │ Dimensi pelanggan (demografi, birthday)    │
+└─────────────────┴────────────────────────────────────────────┘
+
+DATA CLEANING & TRANSFORMATION (Power Query)
+--------------------------------------------------------------------------------
+1. Tipe Data Conversion
+   • Order Date, Open Date → Date
+   • Unit Cost USD, Unit Price USD → Decimal Number (remove $ symbol)
+
+2. Feature Engineering
+   • Channel: IF StoreKey = 0 THEN "Online" ELSE "Offline"
+   • Usia Pelanggan: 2020 - YEAR(Birthday)
+   • Kelompok Usia: 
+     - Muda    : < 30 tahun
+     - Dewasa  : 30 - 50 tahun
+     - Senior  : > 50 tahun
+
+3. Date Table Creation
+   • Untuk time intelligence analysis
+
+DATA MODEL
+--------------------------------------------------------------------------------
+                    ┌─────────────┐
+                    │   Date      │
+                    │   Table     │
+                    └──────┬──────┘
+                           │
+         ┌─────────────────┼─────────────────┐
+         │                 │                 │
+    ┌────┴────┐      ┌────┴────┐      ┌────┴────┐
+    │Products │      │ Stores  │      │Customers│
+    └────┬────┘      └────┬────┘      └────┬────┘
+         │                │                │
+         │    Many-to-One │                │
+         └────────────────┼────────────────┘
+                          │
+                    ┌─────┴─────┐
+                    │   Sales   │
+                    │  (Fact)   │
+                    └───────────┘
+
+DAX MEASURES
+--------------------------------------------------------------------------------
+┌─────────────────────────┬──────────────────────────────────────────────────┐
+│ Measure                 │ Formula                                            │
+├─────────────────────────┼──────────────────────────────────────────────────┤
+│ Total Revenue           │ SUMX(Sales, Sales[Quantity] *                      │
+│                         │ RELATED(Products[Unit Price USD]))                 │
+├─────────────────────────┼──────────────────────────────────────────────────┤
+│ Total Cost              │ SUMX(Sales, Sales[Quantity] *                      │
+│                         │ RELATED(Products[Unit Cost USD]))                  │
+├─────────────────────────┼──────────────────────────────────────────────────┤
+│ Gross Profit            │ [Total Revenue] - [Total Cost]                     │
+├─────────────────────────┼──────────────────────────────────────────────────┤
+│ Profit Margin %         │ DIVIDE([Gross Profit], [Total Revenue])            │
+├─────────────────────────┼──────────────────────────────────────────────────┤
+│ Total Orders            │ DISTINCTCOUNT(Sales[Order Number])                 │
+├─────────────────────────┼──────────────────────────────────────────────────┤
+│ Average Order Value     │ DIVIDE([Total Revenue], [Total Orders])            │
+├─────────────────────────┼──────────────────────────────────────────────────┤
+│ Total Quantity          │ SUM(Sales[Quantity])                               │
+└─────────────────────────┴──────────────────────────────────────────────────┘
+
+DASHBOARD COMPONENTS
+--------------------------------------------------------------------------------
+
+[ROW 1 - KPI CARDS]
+┌──────────────┬──────────────┬──────────────┬──────────────────┐
+│Total Revenue │ Gross Profit │ Total Orders │ Avg Order Value  │
+└──────────────┴──────────────┴──────────────┴──────────────────┘
+
+[ROW 2 - TREND & MAP]
+┌─────────────────────────────┬──────────────────────────────┐
+│ Line Chart: Revenue/Bulan   │ Map: Revenue per Negara      │
+│ & Tahun                     │                              │
+└─────────────────────────────┴──────────────────────────────┘
+
+[ROW 3 - COMPOSITION]
+┌─────────────────────────────┬──────────────────────────────┐
+│ Donut Chart: Revenue per    │ Horizontal Bar: Top 10       │
+│ Kategori                    │ Produk                       │
+└─────────────────────────────┴──────────────────────────────┘
+
+[ROW 4 - CHANNEL & CUSTOMER]
+┌─────────────────────────────┬──────────────────────────────┐
+│ Clustered Bar: Online vs    │ Donut Chart: Gender          │
+│ Offline                     │ Composition                  │
+└─────────────────────────────┴──────────────────────────────┘
+
+[ROW 5 - PROFITABILITY]
+┌─────────────────────────────────────────────────────────────┐
+│ Scatter Plot: Revenue vs Profit Margin per Brand            │
+└─────────────────────────────────────────────────────────────┘
+
+[SLICER PANEL]
+• Tahun | Negara | Kategori | Channel
+
+KEY INSIGHTS (Expected)
+--------------------------------------------------------------------------------
+• Identifikasi produk dengan volume tinggi tapi margin rendah
+• Analisis efisiensi revenue per meter persegi toko
+• Segmentasi pelanggan berdasarkan usia dan geografis
+• Perbandingan performa channel Online vs Offline
+• Tren penjualan bulanan dan tahunan
+
+TECHNICAL SKILLS DEMONSTRATED
+--------------------------------------------------------------------------------
+✓ Data Cleaning & Transformation (Power Query)
+✓ Data Modeling (Star Schema)
+✓ DAX Calculations & Time Intelligence
+✓ Data Visualization Best Practices
+✓ Dashboard Design & UX
+✓ Business Metrics & KPI Development
+
+DELIVERABLES
+--------------------------------------------------------------------------------
+1. Power BI Dashboard (.pbix)
+2. Data Model Documentation
+3. DAX Measures Documentation
+4. Project Brief (this document)
+5. User Guide / Walkthrough
+
+================================================================================
+                              END OF DOCUMENT
+================================================================================

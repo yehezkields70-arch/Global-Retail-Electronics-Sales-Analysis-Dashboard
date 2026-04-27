@@ -1,0 +1,140 @@
+================================================================================
+                    POWER QUERY TRANSFORMATION GUIDE
+                Global Retail Electronics Sales Analysis
+================================================================================
+
+LANGKAH 1: LOAD DATA
+--------------------------------------------------------------------------------
+1. Buka Power BI Desktop
+2. Klik "Get Data" > "Text/CSV" atau "Excel"
+3. Pilih file: Sales.csv, Products.csv, Stores.csv, Customers.csv
+4. Klik "Transform Data" untuk masuk ke Power Query Editor
+
+================================================================================
+LANGKAH 2: TRANSFORMASI TABEL SALES
+================================================================================
+
+A. Ubah Tipe Data Order Date
+   ----------------------------------------
+   1. Klik kolom [Order Date]
+   2. Klik tab "Transform"
+   3. Klik "Data Type" > "Date"
+
+B. Buat Kolom Channel
+   ----------------------------------------
+   1. Klik tab "Add Column"
+   2. Klik "Custom Column"
+   3. Isi:
+      New column name: Channel
+      Custom column formula:
+      ----------------------------------------
+      if [StoreKey] = 0 then "Online" else "Offline"
+      ----------------------------------------
+   4. Klik "OK"
+
+C. Pastikan Tipe Data Numerik
+   ----------------------------------------
+   1. Klik kolom [Quantity]
+   2. Pastikan tipe data: "Whole Number"
+
+================================================================================
+LANGKAH 3: TRANSFORMASI TABEL PRODUCTS
+================================================================================
+
+A. Ubah Unit Price USD (Remove $ Symbol)
+   ----------------------------------------
+   1. Klik kolom [Unit Price USD]
+   2. Klik tab "Transform"
+   3. Klik "Replace Values"
+   4. Values to find: $
+   5. Replace with: (kosongkan)
+   6. Klik "OK"
+   7. Ubah tipe data ke "Decimal Number"
+
+B. Ubah Unit Cost USD (Remove $ Symbol)
+   ----------------------------------------
+   1. Klik kolom [Unit Cost USD]
+   2. Klik tab "Transform"
+   3. Klik "Replace Values"
+   4. Values to find: $
+   5. Replace with: (kosongkan)
+   6. Klik "OK"
+   7. Ubah tipe data ke "Decimal Number"
+
+================================================================================
+LANGKAH 4: TRANSFORMASI TABEL STORES
+================================================================================
+
+A. Ubah Tipe Data Open Date
+   ----------------------------------------
+   1. Klik kolom [Open Date]
+   2. Klik tab "Transform"
+   3. Klik "Data Type" > "Date"
+
+================================================================================
+LANGKAH 5: TRANSFORMASI TABEL CUSTOMERS
+================================================================================
+
+A. Buat Kolom Usia Pelanggan
+   ----------------------------------------
+   1. Klik tab "Add Column"
+   2. Klik "Custom Column"
+   3. Isi:
+      New column name: Usia Pelanggan
+      Custom column formula:
+      ----------------------------------------
+      2020 - Date.Year([Birthday])
+      ----------------------------------------
+   4. Klik "OK"
+   5. Ubah tipe data ke "Whole Number"
+
+B. Buat Kolom Kelompok Usia
+   ----------------------------------------
+   1. Klik tab "Add Column"
+   2. Klik "Custom Column"
+   3. Isi:
+      New column name: Kelompok Usia
+      Custom column formula:
+      ----------------------------------------
+      if [Usia Pelanggan] < 30 then "Muda" 
+      else if [Usia Pelanggan] >= 30 and [Usia Pelanggan] <= 50 then "Dewasa" 
+      else "Senior"
+      ----------------------------------------
+   4. Klik "OK"
+
+================================================================================
+LANGKAH 6: BUAT DATE TABLE
+================================================================================
+
+A. Buat Tabel Tanggal Baru
+   ----------------------------------------
+   1. Klik tab "Modeling" (di Power BI Desktop, bukan Power Query)
+   2. Klik "New Table"
+   3. Masukkan DAX:
+      ----------------------------------------
+      Date Table = 
+      ADDCOLUMNS(
+          CALENDAR(
+              MIN(Sales[Order Date]),
+              MAX(Sales[Order Date])
+          ),
+          "Year", YEAR([Date]),
+          "Month", MONTH([Date]),
+          "Month Name", FORMAT([Date], "MMMM"),
+          "Quarter", QUARTER([Date]),
+          "Day", DAY([Date]),
+          "Weekday", WEEKDAY([Date]),
+          "Weekday Name", FORMAT([Date], "dddd")
+      )
+      ----------------------------------------
+
+================================================================================
+LANGKAH 7: CLOSE & APPLY
+================================================================================
+
+1. Klik "Close & Apply" di Power Query Editor
+2. Tunggu data di-load ke Power BI
+
+================================================================================
+                              END OF DOCUMENT
+================================================================================

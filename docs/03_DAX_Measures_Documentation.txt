@@ -1,0 +1,152 @@
+================================================================================
+                    DAX MEASURES DOCUMENTATION
+              Global Retail Electronics Sales Analysis
+================================================================================
+
+CATATAN: Copy-paste measure berikut ke Power BI Desktop > Modeling > New Measure
+
+================================================================================
+                           REVENUE & COST MEASURES
+================================================================================
+
+-- Total Revenue
+-- Menghitung total pendapatan dari semua transaksi
+Total Revenue = 
+SUMX(
+    Sales,
+    Sales[Quantity] * RELATED(Products[Unit Price USD])
+)
+
+-- Total Cost
+-- Menghitung total biaya dari semua transaksi
+Total Cost = 
+SUMX(
+    Sales,
+    Sales[Quantity] * RELATED(Products[Unit Cost USD])
+)
+
+================================================================================
+                           PROFITABILITY MEASURES
+================================================================================
+
+-- Gross Profit
+-- Selisih antara Total Revenue dan Total Cost
+Gross Profit = 
+[Total Revenue] - [Total Cost]
+
+-- Profit Margin %
+-- Persentase profit terhadap revenue
+Profit Margin % = 
+DIVIDE(
+    [Gross Profit],
+    [Total Revenue],
+    0
+)
+
+================================================================================
+                            ORDER METRICS
+================================================================================
+
+-- Total Orders
+-- Jumlah unik order number
+Total Orders = 
+DISTINCTCOUNT(Sales[Order Number])
+
+-- Average Order Value
+-- Rata-rata nilai per order
+Average Order Value = 
+DIVIDE(
+    [Total Revenue],
+    [Total Orders],
+    0
+)
+
+-- Total Quantity
+-- Total unit terjual
+Total Quantity = 
+SUM(Sales[Quantity])
+
+================================================================================
+                         TIME INTELLIGENCE (Optional)
+================================================================================
+
+-- Revenue YTD (Year-to-Date)
+Revenue YTD = 
+TOTALYTD(
+    [Total Revenue],
+    'Date Table'[Date]
+)
+
+-- Revenue Same Period Last Year
+Revenue SPLY = 
+CALCULATE(
+    [Total Revenue],
+    SAMEPERIODLASTYEAR('Date Table'[Date])
+)
+
+-- Revenue Growth %
+Revenue Growth % = 
+DIVIDE(
+    [Total Revenue] - [Revenue SPLY],
+    [Revenue SPLY],
+    0
+)
+
+================================================================================
+                         CHANNEL ANALYSIS
+================================================================================
+
+-- Online Revenue
+Online Revenue = 
+CALCULATE(
+    [Total Revenue],
+    Sales[Channel] = "Online"
+)
+
+-- Offline Revenue
+Offline Revenue = 
+CALCULATE(
+    [Total Revenue],
+    Sales[Channel] = "Offline"
+)
+
+-- Online Orders
+Online Orders = 
+CALCULATE(
+    [Total Orders],
+    Sales[Channel] = "Online"
+)
+
+-- Offline Orders
+Offline Orders = 
+CALCULATE(
+    [Total Orders],
+    Sales[Channel] = "Offline"
+)
+
+================================================================================
+                         CUSTOMER SEGMENTATION
+================================================================================
+
+-- Revenue by Age Group (contoh untuk Muda)
+Revenue Muda = 
+CALCULATE(
+    [Total Revenue],
+    Customers[Kelompok Usia] = "Muda"
+)
+
+-- Customer Count
+Total Customers = 
+DISTINCTCOUNT(Sales[CustomerKey])
+
+-- Revenue per Customer
+Revenue per Customer = 
+DIVIDE(
+    [Total Revenue],
+    [Total Customers],
+    0
+)
+
+================================================================================
+                              END OF DOCUMENT
+================================================================================
