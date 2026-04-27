@@ -174,7 +174,7 @@ Total Quantity = SUM(Sales[Quantity])
 │   └── customer_analysis.png
 │
 └── 📊 Global_Retail_Electronics.pbix   
-
+```
 ---
 
 ## How to Use
