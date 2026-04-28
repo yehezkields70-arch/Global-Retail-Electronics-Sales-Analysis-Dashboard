@@ -108,7 +108,7 @@ Total Quantity = SUM(Sales[Quantity])
 - Total Revenue
 - Gross Profit
 - Total Orders
-- verage Order Value
+- Average Order Value
 
 ### Visualizations
 | Chart Type | Purpose |
